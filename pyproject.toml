@@ -244,6 +244,7 @@ passenv = GITHUB_*
 deps =
     coverage[toml]
     pytest
+    pytest-benchmark
     pytest-cov
 commands =
     coverage run -m pytest
