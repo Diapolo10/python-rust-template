@@ -1,3 +1,5 @@
+# Python
+
 # Source files
 # ============
 *.pxd    text diff=python
@@ -26,5 +28,31 @@
 # ``shelve``, ``marshal``, ``anydbm``, & ``bsddb``
 # (among others).
 
-# Auto detect text files and perform LF normalization
-* text=auto
+# Rust
+
+[attr]rust text eol=lf whitespace=tab-in-indent,trailing-space,tabwidth=4
+
+# Source files
+# ============
+*.cpp     rust
+*.h       rust
+*.rs      rust diff=rust
+*.fixed   linguist-language=Rust
+*.mir     linguist-language=Rust
+
+# Binary files
+# ============
+src/etc/installer/gfx/* binary
+
+# Other files
+src/vendor/** -text
+Cargo.lock    linguist-generated=false
+
+# Older git versions try to fix line endings on images and fonts, this prevents it.
+*.png   binary
+*.ico   binary
+*.woff  binary
+*.woff2 binary
+
+# Normalise line endings in other files
+* text=auto eol=lf

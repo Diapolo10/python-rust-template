@@ -39,11 +39,16 @@ lint: $(INSTALL_STAMP)
     # $(POETRY) run black --check $(TESTS) $(PYMODULE) --diff
 	@if [ -z $(MYPY) ]; then echo "Mypy not found, skipping..."; else echo "Running Mypy..."; $(POETRY) run mypy $(PYMODULE) $(TESTS); fi
 	@echo "Running Ruff..."; $(POETRY) run ruff . --fix
+	@echo "Running Cargo lint..."; cargo lint
 
 .PHONY: test
 test: $(INSTALL_STAMP)
     # Configured in pyproject.toml
 	$(POETRY) run pytest
+
+.PHONY: build
+build: $(INSTALL_STAMP)
+	$(POETRY) run maturin develop
 
 .PHONY: clean
 clean:
