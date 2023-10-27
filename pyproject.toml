@@ -224,7 +224,6 @@ ban-relative-imports = "all"
 legacy_tox_ini = """
 [tox]
 envlist = py39, py310, py311, pypy3
-isolated_build = True
 
 [gh-actions]
 python =
@@ -233,19 +232,14 @@ python =
     3.11: py311
     pypy-3.9: pypy3
 
-[gh-actions:env]
-PLATFORM =
-    ubuntu-latest: linux
-    macos-latest: macos
-    windows-latest: windows
-
 [testenv]
 passenv = GITHUB_*
-deps =
-    coverage[toml]
-    pytest
-    pytest-benchmark
-    pytest-cov
+allowlist_externals = poetry
+
+commads_pre =
+    poetry install --with tests --no-root --sync
+
 commands =
-    coverage run -m pytest
+    poetry run pytest
+    poetry run coverage report
 """
