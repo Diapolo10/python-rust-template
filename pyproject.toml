@@ -230,14 +230,16 @@ python =
     3.9: py39
     3.10: py310
     3.11: py311
-    pypy-3.9: pypy3
+    3.12: py312
+    pypy-3.10: pypy3
 
 [testenv]
 passenv = GITHUB_*
 allowlist_externals = poetry
 
 commads_pre =
-    poetry install --with tests --no-root --sync
+    poetry install --with dev,tests --no-root --sync
+    poetry run maturin develop
 
 commands =
     poetry run pytest

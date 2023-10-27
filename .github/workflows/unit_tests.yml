@@ -41,8 +41,8 @@ jobs:
     - name: Install library and dependencies
       run: |
         poetry run pip install --upgrade pip setuptools
-        poetry install --with dev,tests
-        poetry run maturin develop
+      # poetry install --with dev,tests
+      # poetry run maturin develop
 
     - name: Run Tox (Pytest + Coverage)
       run: |
