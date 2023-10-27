@@ -223,7 +223,7 @@ ban-relative-imports = "all"
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py39, py310, py311, pypy3
+envlist = py39, py310, py311, py312, pypy3
 
 [gh-actions]
 python =
@@ -237,9 +237,8 @@ python =
 passenv = GITHUB_*
 allowlist_externals = poetry
 
-commads_pre =
-    poetry install --with dev,tests --no-root --sync
-    poetry run maturin develop
+# commads_pre =
+#     poetry install --with dev,tests --no-root --sync
 
 commands =
     poetry run pytest
