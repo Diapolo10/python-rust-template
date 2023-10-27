@@ -237,9 +237,6 @@ python =
 passenv = GITHUB_*
 allowlist_externals = poetry
 
-# commads_pre =
-#     poetry install --with dev,tests --no-root --sync
-
 commands =
     poetry run pytest
     poetry run coverage report

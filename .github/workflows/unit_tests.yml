@@ -72,11 +72,18 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Publish distribution 📦 to Test PyPI
-      uses: JRubics/poetry-publish@v1.17
-      continue-on-error: true
+    - name: Build test release 📦
+      uses: messense/maturin-action@v1
       with:
-        ignore_dev_requirements: 'yes'
-        pypi_token: ${{ secrets.TEST_PYPI_PASSWORD }}
-        repository_name: 'testpypi'
-        repository_url: 'https://test.pypi.org/legacy/'
+        manylinux: auto
+        command: build
+        args: --release --sdist -o dist --find-interpreter
+
+    - name: Publish test release 📦 to Test PyPI
+      uses: messense/maturin-action@v1
+      continue-on-error: true
+      env:
+        MATURIN_PYPI_TOKEN: ${{ secrets.TEST_PYPI_PASSWORD }}
+      with:
+        command: upload
+        args: --skip-existing * --repository-url "https://test.pypi.org/legacy"
