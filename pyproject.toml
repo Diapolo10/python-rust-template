@@ -239,6 +239,7 @@ allowlist_externals = poetry
 
 commads_pre =
     poetry install --with dev,tests --no-root --sync
+    poetry run maturin develop
 
 commands =
     poetry run pytest
