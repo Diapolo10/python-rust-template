@@ -39,10 +39,10 @@ classifiers = [
 
 
 [project.urls]
-"Source code" = "https://github.com/Diapolo10/project_name"
-"Changelog" = "https://github.com/Diapolo10/project_name/blob/main/CHANGELOG.md"
-"Documentation" = "https://github.com/Diapolo10/project_name/tree/main/docs"
-"Tracker" = "https://github.com/Diapolo10/project_name/issues"
+"Source code" = "https://github.com/Diapolo10/project-name"
+"Changelog" = "https://github.com/Diapolo10/project-name/blob/main/CHANGELOG.md"
+"Documentation" = "https://github.com/Diapolo10/project-name/tree/main/docs"
+"Tracker" = "https://github.com/Diapolo10/project-name/issues"
 
 
 [tool.coverage.run]
@@ -80,8 +80,8 @@ python = "^3.9"
 
 
 [tool.poetry.group.dev.dependencies]
-maturin = "^1.3.1"
-mypy = "^1.6.1"
+maturin = "^1.3.2"
+mypy = "^1.7.0"
 sphinx = "^7.2.6"
 
 
@@ -90,7 +90,7 @@ optional = true
 
 
 [tool.poetry.group.linters.dependencies]
-ruff = "^0.1.3"
+ruff = "^0.1.5"
 
 
 [tool.poetry.group.tests]
@@ -199,13 +199,12 @@ multiline-quotes = "double"
 
 
 [tool.ruff.mccabe]
-# Unlike Flake8, default to a complexity level of 10.
 max-complexity = 10
 
 
 [tool.ruff.per-file-ignores]
 # https://beta.ruff.rs/docs/rules/
-"__init__.py" = ["F401","F403","F405",]
+"__init__.py" = ["F401", "F403", "F405",]
 "tests/*" = ["ANN", "ARG", "INP001", "S101",]
 
 
@@ -224,6 +223,7 @@ ban-relative-imports = "all"
 legacy_tox_ini = """
 [tox]
 envlist = py39, py310, py311, py312, pypy3
+skip_missing_interpreters = true
 
 [gh-actions]
 python =
