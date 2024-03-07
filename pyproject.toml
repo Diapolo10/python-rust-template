@@ -102,7 +102,7 @@ optional = true
 pytest = "^8.1.0"
 pytest-benchmark = "^4.0.0"
 pytest-cov = "^4.1.0"
-tox = "^4.14.0"
+tox = "^4.14.1"
 tox-gh-actions = "^3.2.0"
 
 
