@@ -736,13 +736,13 @@ files = [
 
 [[package]]
 name = "sphinx"
-version = "7.3.4"
+version = "7.3.6"
 description = "Python documentation generator"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "sphinx-7.3.4-py3-none-any.whl", hash = "sha256:f67400c457599a6cfd967b681e093b43892b8df71596774b3128e31b6f0899eb"},
-    {file = "sphinx-7.3.4.tar.gz", hash = "sha256:614826a7cf76f0a4525875c3ed55e2c3618f906897cb7ad53511c5fedcbb35aa"},
+    {file = "sphinx-7.3.6-py3-none-any.whl", hash = "sha256:d6c09acd42094fcd96a9299c1b32b2dafe82d667fdd6e532e5978443ad074c2a"},
+    {file = "sphinx-7.3.6.tar.gz", hash = "sha256:fc9f3d13fed5c9a0e677d368090e209899ce5d0081eb552b657e2923e57517f0"},
 ]
 
 [package.dependencies]
@@ -994,4 +994,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "646835d2972336dd060cc0996493a9f46d3c95314c14879309b15a1e015a5775"
+content-hash = "90458a39d0727c7da90a7e2211ca26b4c7f7fb5a587d69a44930b3aecb0553ae"
