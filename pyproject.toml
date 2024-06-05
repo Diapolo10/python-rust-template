@@ -81,7 +81,7 @@ python = "^3.9"
 
 
 [tool.poetry.group.dev.dependencies]
-maturin = "^1.5.1"
+maturin = "^1.6.0"
 mypy = "^1.10.0"
 sphinx = "^7.3.7"
 
