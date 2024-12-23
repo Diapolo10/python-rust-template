@@ -82,7 +82,7 @@ python = "^3.9"
 
 [tool.poetry.group.dev.dependencies]
 maturin = "^1.7.8"
-mypy = "^1.13.0"
+mypy = "^1.14.0"
 sphinx = "^7.4.7"
 
 
