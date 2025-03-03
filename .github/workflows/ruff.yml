@@ -36,7 +36,7 @@ jobs:
     - name: Lint with Ruff
       id: lint
       run: |
-        poetry run ruff check --fix .
+        uv run ruff check --fix .
         echo "RUFF_SUCCESS=$([ $? -eq 0 ])" >> $GITHUB_OUTPUT
 
     - name: Create Pull Request
