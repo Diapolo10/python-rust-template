@@ -7,18 +7,35 @@
 
 name: Unit tests
 
-on: [ push, pull_request ]
+on:
+  push:
+    branches-ignore:
+      - 'dependabot/**'  # Avoid duplicates; only run the PR, not the push
+      - 'gh-pages'  # GitHub Pages do not trigger all tests
+    tags-ignore:
+      - 'v*'  # Avoid re-running existing commit on release
+  pull_request:
+    branches:
+      - 'main'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_COLOR: 1
 
 jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
         python-version: [
           '3.9',
           '3.10',
           '3.11',
+          '3.12',
           # 'pypy-3.10',
         ]
 
@@ -30,23 +47,22 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
       with:
+        cache-dependency-glob: "uv.lock"
+        enable-cache: false
         python-version: ${{ matrix.python-version }}
-
-    - name: Install Poetry
-      uses: Gr1N/setup-poetry@v9
+        version: "0.5.13"
 
     - name: Install library and dependencies
       run: |
-        poetry run pip install --upgrade pip setuptools
-        poetry install --with dev,tests
-        poetry run maturin develop
+        uv sync --frozen
+        uv run maturin develop
 
     - name: Run Tox (Pytest + Coverage)
       run: |
-        poetry run tox
+        uvx --with tox-uv tox
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         PLATFORM: ${{ matrix.os }}
@@ -55,7 +71,7 @@ jobs:
       if: success()
       uses: codecov/codecov-action@v5
       with:
-        env_vars: PYTHON_VERSION
+        env_vars: TOXENV
         fail_ci_if_error: false
         files: ./tests/reports/coverage-html/index.html,./tests/reports/coverage.xml
         flags: unittests
@@ -71,6 +87,17 @@ jobs:
 
     - name: Checkout repository
       uses: actions/checkout@v4
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        cache-dependency-glob: "uv.lock"
+        enable-cache: true
+
+    - name: Install Python
+      uses: actions/setup-python@v5
+      with:
+        python-version-file: "pyproject.toml"
 
     - name: Build test release 📦
       uses: messense/maturin-action@v1

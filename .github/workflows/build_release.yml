@@ -17,6 +17,18 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        cache-dependency-glob: "uv.lock"
+        enable-cache: true
+        python-version: "3.12"
+        version: "0.5.13"
+
+    - name: Install library and dependencies
+      run: |
+        uv sync --frozen
+
     - uses: messense/maturin-action@v1
       with:
         manylinux: auto
@@ -35,6 +47,18 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        cache-dependency-glob: "uv.lock"
+        enable-cache: true
+        python-version: "3.12"
+        version: "0.5.13"
+
+    - name: Install library and dependencies
+      run: |
+        uv sync --frozen
+
     - uses: messense/maturin-action@v1
       with:
         command: build
@@ -51,6 +75,17 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        cache-dependency-glob: "uv.lock"
+        enable-cache: true
+        version: "0.5.13"
+
+    - name: Install library and dependencies
+      run: |
+        uv sync --frozen
 
     - uses: messense/maturin-action@v1
       with:
