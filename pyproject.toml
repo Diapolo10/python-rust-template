@@ -7,7 +7,7 @@ name = "project-name"
 version = "0.1.0"
 description = "A template mixed language (Python/Rust) project structure."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 license = { file = "LICENSE" }
 dependencies = []
 authors = [
@@ -42,15 +42,16 @@ classifiers = [
 
 [dependency-groups]
 dev = [
+    "jinja2>=3.1.6",
     "maturin>=1.8.2",
-    "mypy>=1.14.1",
-    "pytest>=8.3.4",
+    "mypy>=1.15.0",
+    "pytest>=8.3.5",
     "pytest-benchmark>=5.1.0",
     "pytest-cov>=6.0.0",
-    "ruff>=0.9.3",
-    "sphinx>=7.4.7",
-    "tox>=4.24.1",
-    "tox-gh-actions>=3.2.0",
+    "ruff>=0.9.10",
+    "sphinx>=8.2.3",
+    "tox>=4.24.2",
+    "tox-gh-actions>=3.3.0",
 ]
 
 [tool.coverage.run]
