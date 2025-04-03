@@ -43,14 +43,15 @@ classifiers = [
 [dependency-groups]
 dev = [
     "jinja2>=3.1.6",
-    "maturin>=1.8.2",
+    "maturin>=1.8.3",
     "mypy>=1.15.0",
     "pytest>=8.3.5",
     "pytest-benchmark>=5.1.0",
     "pytest-cov>=6.0.0",
-    "ruff>=0.9.10",
+    "pytest-xdist[psutil]>=3.6.1",
+    "ruff>=0.11.0",
     "sphinx>=8.2.3",
-    "tox>=4.24.2",
+    "tox>=4.25.0",
     "tox-gh-actions>=3.3.0",
 ]
 
@@ -78,8 +79,10 @@ addopts = """
 --cov-append \
 --cov-report html:tests/reports/coverage-html \
 --cov-report xml:tests/reports/coverage.xml \
+--dist worksteal
 --doctest-modules \
---ignore=docs/
+--ignore=docs/ \
+-n logical
 """
 filterwarnings = [
     "ignore::pytest_benchmark.logger.PytestBenchmarkWarning",
