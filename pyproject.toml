@@ -105,7 +105,7 @@ lint.ignore = [
 line-length = 120
 show-fixes = true
 src = ["python",]
-target-version = "py39"
+target-version = "py311"
 
 [tool.ruff.lint.flake8-quotes]
 docstring-quotes = "double"
@@ -131,16 +131,15 @@ ban-relative-imports = "all"
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py3{9, 10, 11, 12}, pypy3
+envlist = py3{11, 12, 13}, pypy3
 skip_missing_interpreters = true
 
 [gh-actions]
 python =
-    3.9: py39
-    3.10: py310
     3.11: py311
     3.12: py312
-    pypy-3.10: pypy3
+    3.13: py313
+    pypy-3.11: pypy3
 
 [testenv]
 pass_env =
