@@ -36,7 +36,7 @@ jobs:
         args: --release --sdist -o dist --find-interpreter
 
     - name: Upload wheels
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: wheels
         path: dist
@@ -65,7 +65,7 @@ jobs:
         args: --release -o dist --find-interpreter
 
     - name: Upload wheels
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: wheels
         path: dist
@@ -93,7 +93,7 @@ jobs:
         args: --release -o dist --universal2 --find-interpreter
 
     - name: Upload wheels
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: wheels
         path: dist
