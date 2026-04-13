@@ -1,5 +1,5 @@
 [build-system]
-requires = ["maturin>=1.0,<2.0"]
+requires = ["maturin>=1.13.1,<2.0"]
 build-backend = "maturin"
 
 [project]
@@ -43,11 +43,11 @@ classifiers = [
 [dependency-groups]
 dev = [
     "jinja2>=3.1.6",
-    "maturin>=1.8.3",
+    "maturin>=1.13.1",
     "mypy>=1.15.0",
     "pytest>=9.0.3",
     "pytest-benchmark>=5.1.0",
-    "pytest-cov>=6.0.0",
+    "pytest-cov>=7.1.0",
     "pytest-xdist[psutil]>=3.6.1",
     "ruff>=0.11.0",
     "sphinx>=9.0.4",
