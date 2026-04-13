@@ -51,7 +51,7 @@ dev = [
     "pytest-xdist[psutil]>=3.8.0",
     "ruff>=0.11.0",
     "sphinx>=9.0.4",
-    "tox>=4.25.0",
+    "tox>=4.52.1",
     "tox-gh-actions>=3.5.0",
 ]
 
