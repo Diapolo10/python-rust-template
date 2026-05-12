@@ -24,11 +24,10 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Rust",
     "Typing :: Typed",
@@ -151,3 +150,8 @@ commands =
     uv run --frozen pytest
     uv run --frozen coverage report
 """
+
+[tool.uv]
+constraint-dependencies = [
+    "pygments>=2.20.0",
+]
