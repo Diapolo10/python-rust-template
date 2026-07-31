@@ -10,16 +10,9 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = { file = "LICENSE" }
 dependencies = []
-authors = [
-    { name = "Lari Liuhamo", email = "lari.liuhamo+pypi@gmail.com" },
-]
-maintainers = [
-    { name = "Lari Liuhamo", email = "lari.liuhamo+pypi@gmail.com" },
-]
-keywords = [
-    "python3",
-    "rust",
-]
+authors = [{ name = "Lari Liuhamo", email = "lari.liuhamo+pypi@gmail.com" }]
+maintainers = [{ name = "Lari Liuhamo", email = "lari.liuhamo+pypi@gmail.com" }]
+keywords = ["python3", "rust"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: MIT License",
@@ -57,10 +50,7 @@ dev = [
 [tool.coverage.run]
 branch = true
 relative_files = true
-omit = [
-    ".tox/*",
-    "tests/*",
-]
+omit = [".tox/*", "tests/*"]
 
 [tool.maturin]
 auditwheel = "repair"
@@ -83,18 +73,15 @@ addopts = """
 --ignore=docs/ \
 -n logical
 """
-filterwarnings = [
-    "ignore::pytest_benchmark.logger.PytestBenchmarkWarning",
-]
+filterwarnings = ["ignore::pytest_benchmark.logger.PytestBenchmarkWarning"]
 minversion = "6.0"
-testpaths = [
-    "tests",
-]
+testpaths = ["tests"]
 
 [tool.ruff]
 lint.select = ["ALL"]
 lint.ignore = [
     "COM812",  # Missing trailing comma (disabled due to formatter conflict)
+    "CPY001",  # Missing copyright notice at the top of the file
     "D203",    # One blank line before class docstring
     "D212",    # Multi-line summary first line
     "ISC001",  # Single-line implicit string concatenation (disabled due to formatter conflict)
@@ -103,7 +90,7 @@ lint.ignore = [
 ]
 line-length = 120
 show-fixes = true
-src = ["python",]
+src = ["python"]
 target-version = "py311"
 
 [tool.ruff.lint.flake8-quotes]
@@ -115,8 +102,8 @@ max-complexity = 10
 
 [tool.ruff.lint.per-file-ignores]
 # https://beta.ruff.rs/docs/rules/
-"__init__.py" = ["F401", "F403", "F405", "PGH003",]
-"tests/*" = ["ANN", "ARG", "INP001", "S101",]
+"__init__.py" = ["F401", "F403", "F405", "PGH003"]
+"tests/*" = ["ANN", "ARG", "INP001", "S101"]
 
 [tool.ruff.lint.pylint]
 max-args = 15
@@ -152,6 +139,4 @@ commands =
 """
 
 [tool.uv]
-constraint-dependencies = [
-    "pygments>=2.20.0",
-]
+constraint-dependencies = ["pygments>=2.20.0"]
