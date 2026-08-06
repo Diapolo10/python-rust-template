@@ -1,5 +1,5 @@
 [build-system]
-requires = ["maturin>=1.13.3,<2.0"]
+requires = ["maturin>=1.14.0,<2.0"]
 build-backend = "maturin"
 
 [project]
@@ -7,7 +7,7 @@ name = "project-name"
 version = "0.1.0"
 description = "A template mixed language (Python/Rust) project structure."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 license = { file = "LICENSE" }
 dependencies = []
 authors = [{ name = "Lari Liuhamo", email = "lari.liuhamo+pypi@gmail.com" }]
@@ -17,7 +17,6 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
@@ -35,14 +34,14 @@ classifiers = [
 [dependency-groups]
 dev = [
     "jinja2>=3.1.6",
-    "maturin>=1.13.3",
+    "maturin>=1.14.1",
     "mypy>=2.3.0",
     "pytest>=9.1.1",
     "pytest-benchmark>=5.2.3",
     "pytest-cov>=7.1.0",
     "pytest-xdist[psutil]>=3.8.0",
     "ruff>=0.16.1",
-    "sphinx>=9.0.4",
+    "sphinx>=9.1.0",
     "tox>=4.58.0",
     "tox-gh-actions>=3.5.0",
 ]
@@ -55,11 +54,10 @@ omit = [".tox/*", "tests/*"]
 [tool.maturin]
 auditwheel = "repair"
 bindings = "pyo3"
-compatibility = "manylinux2014"
 module-name = "project_name._project_name"
 python-source = "python"
-strip = true
 sdist-generator = "cargo"
+strip = true
 
 [tool.pytest.ini_options]
 addopts = """
@@ -117,15 +115,14 @@ ban-relative-imports = "all"
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py3{11, 12, 13}, pypy3
+envlist = py3{12, 13, 14}
 skip_missing_interpreters = true
 
 [gh-actions]
 python =
-    3.11: py311
     3.12: py312
     3.13: py313
-    pypy-3.11: pypy3
+    3.14: py314
 
 [testenv]
 pass_env =

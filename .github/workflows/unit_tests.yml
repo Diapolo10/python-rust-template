@@ -14,9 +14,6 @@ on:
       - 'gh-pages'  # GitHub Pages do not trigger all tests
     tags-ignore:
       - 'v*'  # Avoid re-running existing commit on release
-  pull_request:
-    branches:
-      - 'main'
 
 permissions:
   contents: read
@@ -32,9 +29,9 @@ jobs:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
         python-version: [
-          '3.11',
           '3.12',
           '3.13',
+          '3.14',
         ]
 
     env:
@@ -51,7 +48,6 @@ jobs:
         cache-dependency-glob: "uv.lock"
         enable-cache: false
         python-version: ${{ matrix.python-version }}
-        version: "0.5.13"
 
     - name: Install library and dependencies
       run: |
@@ -109,6 +105,7 @@ jobs:
       continue-on-error: true
       env:
         MATURIN_PYPI_TOKEN: ${{ secrets.TEST_PYPI_PASSWORD }}
+        MATURIN_REPOSITORY_URL: "https://test.pypi.org/legacy"
       with:
         command: upload
-        args: --skip-existing * --repository-url "https://test.pypi.org/legacy"
+        args: --skip-existing *

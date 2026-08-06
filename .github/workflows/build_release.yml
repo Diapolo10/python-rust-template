@@ -22,8 +22,6 @@ jobs:
       with:
         cache-dependency-glob: "uv.lock"
         enable-cache: true
-        python-version: "3.12"
-        version: "0.5.13"
 
     - name: Install library and dependencies
       run: |
@@ -52,8 +50,6 @@ jobs:
       with:
         cache-dependency-glob: "uv.lock"
         enable-cache: true
-        python-version: "3.12"
-        version: "0.5.13"
 
     - name: Install library and dependencies
       run: |
@@ -81,7 +77,6 @@ jobs:
       with:
         cache-dependency-glob: "uv.lock"
         enable-cache: true
-        version: "0.5.13"
 
     - name: Install library and dependencies
       run: |
