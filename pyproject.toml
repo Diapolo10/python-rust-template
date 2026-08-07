@@ -57,20 +57,23 @@ python-source = "python"
 sdist-generator = "cargo"
 strip = true
 
-[tool.pytest.ini_options]
-addopts = """
---benchmark-autosave \
---cov=./ \
---cov-append \
---cov-report html:tests/reports/coverage-html \
---cov-report xml:tests/reports/coverage.xml \
---dist worksteal
---doctest-modules \
---ignore=docs/ \
--n logical
-"""
+[tool.pytest]
+addopts = [
+    "--benchmark-autosave",
+    "--cov=./",
+    "--cov-append",
+    "--cov-report=html:tests/reports/coverage-html",
+    "--cov-report=term-missing:skip-covered",
+    "--cov-report=xml:tests/reports/coverage.xml",
+    "--dist=worksteal",
+    "--doctest-modules",
+    "--durations=5",
+    "--durations-min=1.0",
+    "--ignore=docs/",
+    "-n=logical",
+]
 filterwarnings = ["ignore::pytest_benchmark.logger.PytestBenchmarkWarning"]
-minversion = "6.0"
+minversion = "9.0"
 testpaths = ["tests"]
 
 [tool.ruff]
