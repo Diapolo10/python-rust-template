@@ -42,14 +42,12 @@ dev = [
     "pytest-xdist[psutil]>=3.8.0",
     "ruff>=0.16.1",
     "sphinx>=9.1.0",
-    "tox>=4.58.0",
-    "tox-gh-actions>=3.5.0",
 ]
 
 [tool.coverage.run]
 branch = true
 relative_files = true
-omit = [".tox/*", "tests/*"]
+omit = ["tests/*"]
 
 [tool.maturin]
 auditwheel = "repair"
@@ -111,29 +109,6 @@ max-statements = 80
 
 [tool.ruff.lint.flake8-tidy-imports]
 ban-relative-imports = "all"
-
-[tool.tox]
-legacy_tox_ini = """
-[tox]
-envlist = py3{12, 13, 14}
-skip_missing_interpreters = true
-
-[gh-actions]
-python =
-    3.12: py312
-    3.13: py313
-    3.14: py314
-
-[testenv]
-pass_env =
-    GITHUB_*
-    FORCE_COLOR
-allowlist_externals = uv
-
-commands =
-    uv run --frozen pytest
-    uv run --frozen coverage report
-"""
 
 [tool.uv]
 constraint-dependencies = ["pygments>=2.20.0"]

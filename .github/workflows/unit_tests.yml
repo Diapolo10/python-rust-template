@@ -22,17 +22,43 @@ env:
   FORCE_COLOR: 1
 
 jobs:
-  test:
+  generate-matrix:
+    name: Derive Python version matrix from pyproject.toml
+    runs-on: ubuntu-latest
+    outputs:
+      python-versions: ${{ steps.python-versions.outputs.python-versions }}
+    steps:
+
+    - name: Checkout repository
+      uses: actions/checkout@v7
+
+    - name: Read supported versions from classifiers
+      id: python-versions
+      run: |
+        python - <<'EOF' >> "$GITHUB_OUTPUT"
+        import json
+        import tomllib
+
+        with open("pyproject.toml", "rb") as f:
+            classifiers = tomllib.load(f)["project"]["classifiers"]
+        
+        prefix = "Programming Language :: Python :: 3."
+        versions = [
+            classifier.rsplit("::", 1)[-1].strip()
+            for classifier in classifiers
+            if classifier.startswith(prefix)
+        ]
+        print(f"python-versions={json.dumps(versions)}")
+        EOF
+
+  test-and-build:
+    needs: generate-matrix
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-        python-version: [
-          '3.12',
-          '3.13',
-          '3.14',
-        ]
+        python-version: ${{ fromJson(needs.generate-matrix.outputs.python-versions) }}
 
     env:
       PYTHON_VERSION: ${{ matrix.python-version }}
@@ -52,11 +78,12 @@ jobs:
     - name: Install library and dependencies
       run: |
         uv sync --frozen
-        uv run maturin develop
+        uvx maturin develop
 
-    - name: Run Tox (Pytest + Coverage)
+    - name: Run tests (Pytest + Coverage)
       run: |
-        uvx --with tox-uv tox
+        uv run --frozen pytest
+        uv run --frozen coverage report
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         PLATFORM: ${{ matrix.os }}
@@ -65,47 +92,43 @@ jobs:
       if: success()
       uses: codecov/codecov-action@v7
       with:
-        env_vars: TOXENV
+        env_vars: PYTHON_VERSION
         fail_ci_if_error: false
         files: ./tests/reports/coverage-html/index.html,./tests/reports/coverage.xml
         flags: unittests
         name: "${{ matrix.os }} - Python ${{ matrix.python-version }}"
         token: ${{ secrets.CODECOV_TOKEN }}
 
+    - name: Build binaries for ${{ matrix.os }}-${{ matrix.python-version }}
+      run: |
+        uv build
+
+    - name: Upload builds
+      uses: actions/upload-artifact@v7
+      with:
+        name: dist
+        path: dist/
+
 
   testpypi-deploy:
     name: Build and publish Python 🐍 distributions 📦 to TestPyPI
+    environment: testpypi
+    permissions:
+      id-token: write
     runs-on: ubuntu-latest
-    needs: test
+    needs: test-and-build
     steps:
 
-    - name: Checkout repository
-      uses: actions/checkout@v7
-
-    - name: Install uv
-      uses: astral-sh/setup-uv@v7
+    - name: Download Artifacts
+      uses: actions/download-artifact@v8
       with:
-        cache-dependency-glob: "uv.lock"
-        enable-cache: true
+        name: dist
+        path: dist/
 
-    - name: Install Python
-      uses: actions/setup-python@v7
-      with:
-        python-version-file: "pyproject.toml"
-
-    - name: Build test release 📦
-      uses: messense/maturin-action@v1
-      with:
-        manylinux: auto
-        command: build
-        args: --release --sdist -o dist --find-interpreter
-
-    - name: Publish test release 📦 to Test PyPI
-      uses: messense/maturin-action@v1
+    - name: Publish to Test PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
       continue-on-error: true
-      env:
-        MATURIN_PYPI_TOKEN: ${{ secrets.TEST_PYPI_PASSWORD }}
-        MATURIN_REPOSITORY_URL: "https://test.pypi.org/legacy"
       with:
-        command: upload
-        args: --skip-existing *
+        print-hash: true
+        repository-url: https://test.pypi.org/legacy/
+        skip-existing: true
