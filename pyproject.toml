@@ -4,8 +4,8 @@ build-backend = "maturin"
 
 [project]
 name = "project-name"
-version = "0.1.0"
 description = "A template mixed language (Python/Rust) project structure."
+dynamic = ["version"] # Taken from Cargo.toml
 readme = "README.md"
 requires-python = ">=3.12"
 license = { file = "LICENSE" }
