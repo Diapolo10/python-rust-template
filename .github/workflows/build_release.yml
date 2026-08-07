@@ -1,6 +1,6 @@
 # This workflow automatically creates a GitHub release for the project on successful version update
 
-name: Create a GitHub release
+name: Create a release
 
 on:
   push:
@@ -11,9 +11,49 @@ permissions:
   contents: write
 
 jobs:
-  linux:
+  generate-matrix:
+    name: Derive Python version matrix from pyproject.toml
     runs-on: ubuntu-latest
+    outputs:
+      python-versions: ${{ steps.python-versions.outputs.python-versions }}
     steps:
+
+    - name: Checkout repository
+      uses: actions/checkout@v7
+
+    - name: Read supported versions from classifiers
+      id: python-versions
+      run: |
+        python - <<'EOF' >> "$GITHUB_OUTPUT"
+        import json
+        import tomllib
+
+        with open("pyproject.toml", "rb") as f:
+            classifiers = tomllib.load(f)["project"]["classifiers"]
+        
+        prefix = "Programming Language :: Python :: 3."
+        versions = [
+            classifier.rsplit("::", 1)[-1].strip()
+            for classifier in classifiers
+            if classifier.startswith(prefix)
+        ]
+        print(f"python-versions={json.dumps(versions)}")
+        EOF
+
+  build:
+    needs: generate-matrix
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        python-version: ${{ fromJson(needs.generate-matrix.outputs.python-versions) }}
+
+    env:
+      PYTHON_VERSION: ${{ matrix.python-version }}
+
+    steps:
+
     - name: Checkout repository
       uses: actions/checkout@v7
 
@@ -21,7 +61,8 @@ jobs:
       uses: astral-sh/setup-uv@v7
       with:
         cache-dependency-glob: "uv.lock"
-        enable-cache: true
+        enable-cache: false
+        python-version: ${{ matrix.python-version }}
 
     - name: Install library and dependencies
       run: |
@@ -31,72 +72,18 @@ jobs:
       with:
         manylinux: auto
         command: build
-        args: --release --sdist -o dist --find-interpreter
+        args: --release --sdist --out dist --find-interpreter --auditwheel repair
 
-    - name: Upload wheels
+    - name: Upload builds
       uses: actions/upload-artifact@v7
       with:
-        name: wheels
-        path: dist
-
-  windows:
-    runs-on: windows-latest
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v7
-
-    - name: Install uv
-      uses: astral-sh/setup-uv@v7
-      with:
-        cache-dependency-glob: "uv.lock"
-        enable-cache: true
-
-    - name: Install library and dependencies
-      run: |
-        uv sync --frozen
-
-    - uses: messense/maturin-action@v1
-      with:
-        command: build
-        args: --release -o dist --find-interpreter
-
-    - name: Upload wheels
-      uses: actions/upload-artifact@v7
-      with:
-        name: wheels
-        path: dist
-
-  macos:
-    runs-on: macos-latest
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v7
-
-    - name: Install uv
-      uses: astral-sh/setup-uv@v7
-      with:
-        cache-dependency-glob: "uv.lock"
-        enable-cache: true
-
-    - name: Install library and dependencies
-      run: |
-        uv sync --frozen
-
-    - uses: messense/maturin-action@v1
-      with:
-        command: build
-        args: --release -o dist --universal2 --find-interpreter
-
-    - name: Upload wheels
-      uses: actions/upload-artifact@v7
-      with:
-        name: wheels
-        path: dist
+        name: ${{ matrix.os }}-${{ matrix.python-version }}
+        path: dist/
 
   release:
     name: Release
     runs-on: ubuntu-latest
-    needs: [ macos, windows, linux ]
+    needs: build
     steps:
 
       - name: Checkout repository
@@ -105,7 +92,8 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v8
         with:
-          name: wheels
+          merge-multiple: true
+          path: dist/
 
       - name: Check Version
         uses: nowsprinting/check-version-format-action@v5
@@ -141,9 +129,7 @@ jobs:
             *.tar.gz
 
       - name: Publish to PyPI
-        uses: messense/maturin-action@v1
-        env:
-          MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_PASSWORD }}
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          command: upload
-          args: --skip-existing *
+          print-hash: true
+          skip-existing: true
