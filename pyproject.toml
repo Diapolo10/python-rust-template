@@ -57,6 +57,11 @@ python-source = "python"
 sdist-generator = "cargo"
 strip = true
 
+[tool.mypy]
+exclude = ["bin", "build", "dist", "target"]
+warn_unused_configs = true
+warn_unused_ignores = true
+
 [tool.pytest]
 addopts = [
     "--benchmark-autosave",
