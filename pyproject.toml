@@ -39,7 +39,7 @@ dev = [
     "pytest-benchmark>=5.3.0",
     "pytest-cov>=7.1.0",
     "pytest-xdist[psutil]>=3.8.0",
-    "ruff>=0.16.4",
+    "ruff>=0.16.5",
     "sphinx>=9.1.0",
 ]
 
