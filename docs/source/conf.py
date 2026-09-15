@@ -9,7 +9,7 @@
 import tomllib
 from pathlib import Path
 
-root_dir = Path(__file__).parents[1]
+root_dir = Path(__file__).parents[2]
 config_file = root_dir / 'pyproject.toml'
 cargo_config_file = root_dir / 'Cargo.toml'
 config = tomllib.loads(config_file.read_text(encoding='utf-8'))
