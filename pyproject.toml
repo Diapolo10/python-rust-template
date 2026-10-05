@@ -34,7 +34,7 @@ classifiers = [
 [dependency-groups]
 dev = [
     "jinja2>=3.1.6",
-    "mypy>=2.3.1",
+    "mypy>=2.4.0",
     "pytest>=9.1.1",
     "pytest-benchmark>=5.3.0",
     "pytest-cov>=7.1.0",
