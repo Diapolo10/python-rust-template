@@ -57,7 +57,9 @@ python-source = "python"
 sdist-generator = "cargo"
 
 [tool.mypy]
-exclude = ["bin", "build", "dist", "target"]
+exclude_gitignore = true
+pretty = true
+strict_equality = true
 warn_unused_configs = true
 warn_unused_ignores = true
 
