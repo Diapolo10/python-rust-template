@@ -1,0 +1,100 @@
+# This workflow automatically creates a GitHub and PyPI release for the project on successful version update
+
+name: Release Python project
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        python-version: ['3.12', '3.13', '3.14']
+
+    env:
+      PYTHON_VERSION: ${{ matrix.python-version }}
+      UV_PYTHON: ${{ matrix.python-version }}
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Install tools
+        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c
+
+      - name: Install project
+        run: task install
+
+      - name: Build for ${{ matrix.os }}-${{ matrix.python-version }}
+        run: task build:release
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: ${{ matrix.os }}-${{ matrix.python-version }}
+          path: dist/
+
+  release:
+    name: Deploy Python project to GitHub and PyPI
+    environment: pypi
+    permissions:
+      contents: write
+      id-token: write
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          merge-multiple: true
+          path: dist/
+
+      - name: Check Version
+        uses: nowsprinting/check-version-format-action@bb367e7a6d58988a1d3eeaf55168fb8013573a1c
+        id: version
+        with:
+          prefix: 'v'
+
+      - name: Check for Pre-release
+        uses: haya14busa/action-cond@94f77f7a80cd666cb3155084e428254fea4281fd
+        id: is_prerelease
+        with:
+          cond: ${{ steps.version.outputs.prerelease != '' }}
+          if_true: true
+          if_false: false
+
+      - name: Get Newest Changelog
+        run: |
+          python -c "import re; from pathlib import Path; text=re.sub('<!--(.*?)-->', '', (Path.cwd() / 'CHANGELOG.md').read_text(), flags=re.DOTALL); start=text.find('_' * 79); (Path.cwd() / 'TEMP_CHANGELOG.md').write_text(text[start:text.find('_' * 79, start+1)])"
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: Release ${{ github.ref_name }}
+          prerelease: ${{ steps.is_prerelease.outputs.value }}
+          body_path: ./TEMP_CHANGELOG.md
+          files: |
+            dist/*
+
+        # NOTE: We use this action instead of `uv publish` because `uv publish` currently does not generate attestations
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33
+        with:
+          print-hash: true
+          skip-existing: true

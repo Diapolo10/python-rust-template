@@ -1,41 +1,21 @@
-# Analyses the code quality of the project
+# This generic workflow analyses the repository with CodeQL
 
-name: "CodeQL"
+name: CodeQL analysis
 
 on:
-  push:
-    branches: [ "main" ]
+  pull_request_target:
+    types: [opened, reopened, synchronize]
   schedule:
-    - cron: '41 10 * * 5'
+    - cron: '0 0 * * *'
+
+permissions:
+  actions: read
+  contents: read
+  packages: read
+  security-events: write
 
 jobs:
-  analyse:
-    name: Analyse
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'python' ]
-
-    steps:
-
-    - name: Checkout repository
-      uses: actions/checkout@v7
-
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v4.38.2
-      with:
-        languages: ${{ matrix.language }}
-
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v4.38.2
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v4.38.2
-      with:
-        category: "/language:${{matrix.language}}"
+  codeql:
+    uses: diapolo10/.github/.github/workflows/analyse-codeql.yml@0ca8cd668c60de32c345802be214690617b19c5a
+    with:
+      languages: '["actions", "python", "rust"]'

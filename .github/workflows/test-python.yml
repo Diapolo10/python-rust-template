@@ -1,0 +1,82 @@
+# This workflow tests Python code, using mise to handle tool installation and Taskfile to handle the rest
+
+name: Test Python code
+
+on:
+  push:
+    branches-ignore:
+      - 'gh-pages' # GitHub Pages do not trigger all tests
+    tags-ignore:
+      - 'v*' # Avoid re-running existing commit on release
+
+env:
+  FORCE_COLOR: 1
+
+jobs:
+  test-and-build-python:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        python-version: ['3.12', '3.13', '3.14']
+
+    env:
+      PYTHON_VERSION: ${{ matrix.python-version }}
+      UV_PYTHON: ${{ matrix.python-version }}
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Install tools
+        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c
+
+      - name: Install project
+        run: task install
+
+      - name: Test ${{ matrix.os }}-${{ matrix.python-version }}
+        run: task test
+
+      - name: Upload test results to CodeCov
+        if: success()
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5
+        with:
+          env_vars: PYTHON_VERSION
+          fail_ci_if_error: false
+          name: '${{ matrix.os }} - Python ${{ matrix.python-version }}'
+          use_oidc: true
+
+      - name: Build ${{ matrix.os }}-${{ matrix.python-version }} wheel
+        run: task build:python
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: ${{ matrix.os }}-${{ matrix.python-version }}
+          path: dist/
+
+  testpypi-deploy:
+    name: Build and publish Python 🐍 distributions 📦 to TestPyPI
+    environment: testpypi
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    needs: test-and-build-python
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          merge-multiple: true
+          path: dist/
+
+      - name: Publish to TestPyPI
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33
+        continue-on-error: true
+        with:
+          print-hash: true
+          repository-url: https://test.pypi.org/legacy/
+          skip-existing: true
