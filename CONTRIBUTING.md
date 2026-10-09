@@ -21,14 +21,14 @@ You may NOT suggest features through email to the core developers.
 
 ## Setting up your development environment
 
-Since `project-name` has very little to do beyond programming and testing,
-the following should be enough for 95% of all contributors:
+Below are the steps needed to set up a working development environment:
 
-1. A working Git or GitHub Desktop installation
-2. A text editor / Python IDE
-3. An installation of Python that supports Python version 3.10 or higher
-4. The following, non-standard PyPI modules (available through `pip`):
-    - `poetry`
+1. Install Git (if it is not already installed)
+2. Install an IDE or editor for Python (recommended: VS Code)
+3. Install Mise: [Installing Mise][]
+4. Run `mise install` to install tooling
+5. Run `mise exec -- task install` to install dependencies
 
 [Issues]: https://github.com/Diapolo10/project-name/issues
 [Projects]: https://github.com/Diapolo10/project-name/projects
+[Installing Mise]: https://mise.jdx.dev/installing-mise.html

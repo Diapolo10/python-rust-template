@@ -7,10 +7,10 @@ sphinx:
   configuration: docs/source/conf.py
 
 build:
-  os: "ubuntu-lts-latest"
+  os: 'ubuntu-lts-latest'
   tools:
-    python: "latest"
-    rust: "latest"
+    python: 'latest'
+    rust: 'latest'
 
 python:
   install:
