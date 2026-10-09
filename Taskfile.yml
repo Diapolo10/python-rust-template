@@ -1,0 +1,67 @@
+version: '3'
+
+includes:
+  build: ./tasks/build.yml
+  clean: ./tasks/clean.yml
+  format: ./tasks/format.yml
+  hook: ./tasks/hook.yml
+  install: ./tasks/install.yml
+  legal: ./tasks/legal.yml
+  lint: ./tasks/lint.yml
+  test: ./tasks/test.yml
+  update: ./tasks/update.yml
+
+tasks:
+  install:
+    desc: Install dependencies
+    deps:
+      - task: install:tools
+      - task: install:packages
+      - task: install:hooks
+    cmds:
+      - task: legal:lint
+
+  update:
+    desc: Update dependencies
+    deps:
+      - task: install:tools
+    cmds:
+      - task: update:tools
+      - task: update:packages
+
+  format:
+    desc: Format the codebase
+    deps:
+      - task: install
+    cmds:
+      - task: format:python
+      - task: format:yaml
+
+  lint:
+    desc: Lint the codebase
+    deps:
+      - task: install
+    cmds:
+      - task: lint:grammar
+      - task: lint:python
+      - task: lint:security
+
+  test:
+    desc: Run tests
+    deps:
+      - task: lint
+    cmds:
+      - task: test:python
+
+  build:
+    desc: Build the project
+    deps:
+      - task: install
+    cmds:
+      - task: build:python
+
+  clean:
+    desc: Clean the project
+    cmds:
+      - task: clean:windows
+      - task: clean:posix

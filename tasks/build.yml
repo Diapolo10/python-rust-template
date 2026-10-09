@@ -1,0 +1,23 @@
+version: '3'
+
+vars:
+  COMMON_BUILD_FLAGS: --find-interpreter --out ./dist --locked
+
+tasks:
+  python:
+    desc: Build the wheel distribution for the project
+    generates:
+      - '**/dist/**/*'
+    cmds:
+      - mise exec -- uv run maturin build {{.BUILD_FLAGS}} {{.CLI_ARGS}}
+    vars:
+      BUILD_FLAGS: --auditwheel check {{.COMMON_BUILD_FLAGS}}
+
+  release:
+    desc: Build the wheel distribution and create a release tag
+    generates:
+      - '**/dist/**/*'
+    cmds:
+      - mise exec -- uv run maturin build {{.BUILD_FLAGS}} {{.CLI_ARGS}}
+    vars:
+      BUILD_FLAGS: --strip --auditwheel repair {{.COMMON_BUILD_FLAGS}}

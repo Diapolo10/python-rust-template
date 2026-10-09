@@ -34,6 +34,7 @@ classifiers = [
 [dependency-groups]
 dev = [
     "jinja2>=3.1.6",
+    "maturin>=1.15.0",
     "mypy>=2.4.0",
     "pytest>=9.1.1",
     "pytest-benchmark>=5.3.0",
@@ -54,7 +55,6 @@ bindings = "pyo3"
 module-name = "project_name._project_name"
 python-source = "python"
 sdist-generator = "cargo"
-strip = true
 
 [tool.mypy]
 exclude = ["bin", "build", "dist", "target"]
