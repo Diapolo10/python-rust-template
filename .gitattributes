@@ -40,10 +40,6 @@
 *.fixed   linguist-language=Rust
 *.mir     linguist-language=Rust
 
-# Binary files
-# ============
-src/etc/installer/gfx/* binary
-
 # Other files
 src/vendor/** -text
 Cargo.lock    linguist-generated=false
@@ -51,8 +47,18 @@ Cargo.lock    linguist-generated=false
 # Older git versions try to fix line endings on images and fonts, this prevents it.
 *.png   binary
 *.ico   binary
+*.jpg   binary
+*.jpeg  binary
+*.bmp   binary
 *.woff  binary
 *.woff2 binary
+*.mp4   binary
+*.mov   binary
+*.whl   binary
+*.zip   binary
+
+# These files should be ignored for line-ending changes
+.vscode/**/*.yml -text
 
 # Normalise line endings in other files
 * text=auto eol=lf

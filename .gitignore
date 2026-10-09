@@ -132,7 +132,7 @@ dmypy.json
 cov.xml
 
 # Editor config files
-.vscode
+!.vscode
 
 # DeepCode/Snyk
 .dccache
@@ -155,3 +155,9 @@ target/
 
 # MSVC Windows builds of rustc generate these, which store debugging information
 *.pdb
+
+# Cspell
+.cspellcache
+
+# Task
+.task/
