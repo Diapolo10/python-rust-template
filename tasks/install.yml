@@ -1,0 +1,34 @@
+version: '3'
+
+tasks:
+  tools:
+    desc: Install development tools
+    sources:
+      - mise.toml
+      - mise.lock
+      - .mise/locks
+    cmds:
+      - mise install --locked
+
+  packages:
+    desc: Install Python packages
+    deps:
+      - task: tools
+    sources:
+      - pyproject.toml
+      - uv.lock
+    generates:
+      - .venv/**/*
+    cmds:
+      - mise exec -- uv sync --frozen
+      - mise exec -- uv run maturin develop
+
+  hooks:
+    desc: Install Git hooks
+    sources:
+      - .githooks/**/*
+      - tasks/hook.yml
+    generates:
+      - .git/hooks/**/*
+    cmds:
+      - git config core.hooksPath .githooks
