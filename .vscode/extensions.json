@@ -1,0 +1,20 @@
+{
+  "recommendations": [
+    "charliermarsh.ruff",
+    "davidanson.vscode-markdownlint",
+    "dlech.chmod",
+    "eamodio.gitlens",
+    "esbenp.prettier-vscode",
+    "fill-labs.dependi",
+    "github.vscode-github-actions",
+    "hverlin.mise-vscode",
+    "ms-python.mypy-type-checker",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "redhat.vscode-yaml",
+    "streetsidesoftware.code-spell-checker",
+    "tamasfe.even-better-toml",
+    "usernamehw.errorlens",
+    "yzhang.markdown-all-in-one"
+  ]
+}
