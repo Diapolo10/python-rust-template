@@ -1,0 +1,17 @@
+[settings]
+disable_backends = ["asdf", "vfox", "ubi"]
+lockfile = true
+minimum_release_age = "7d"
+pin = true
+prefer_offline = true
+system_deps = "auto"
+
+[env]
+TASK_X_GENTLE_FORCE = 1
+
+[tools]
+cspell = "10.3.3"
+node = "26"       # Needed for cspell
+prettier = "3"
+task = "3"
+uv = "0"
