@@ -17,6 +17,6 @@ permissions:
 
 jobs:
   codeql:
-    uses: diapolo10/.github/.github/workflows/codeql.yml@1d2f3cc5e802b23d8ab85dad2c54dedd6e4ce1ab
+    uses: diapolo10/.github/.github/workflows/codeql.yml@ca58b6e175aae9026e66905e4b4b55c0088fcafb
     with:
       languages: '["actions", "python", "rust"]'
