@@ -63,7 +63,7 @@ jobs:
           path: dist/
 
       - name: Check Version
-        uses: nowsprinting/check-version-format-action@bb367e7a6d58988a1d3eeaf55168fb8013573a1c
+        uses: nowsprinting/check-version-format-action@62b39fce3eab26b761544e58016e2183d7a73c0b
         id: version
         with:
           prefix: 'v'
