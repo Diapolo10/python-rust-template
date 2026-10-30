@@ -28,7 +28,7 @@ tasks:
     sources:
       - .githooks/**/*
       - tasks/hook.yml
-    generates:
-      - .git/hooks/**/*
+    status:
+      - test "$(git config --get core.hooksPath)" = ".githooks"
     cmds:
       - git config core.hooksPath .githooks
