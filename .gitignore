@@ -133,6 +133,7 @@ cov.xml
 
 # Editor config files
 !.vscode
+.vscode/mise-tools/
 
 # DeepCode/Snyk
 .dccache
