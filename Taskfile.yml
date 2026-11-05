@@ -26,6 +26,7 @@ tasks:
     deps:
       - task: install:tools
     cmds:
+      - task: update:mise
       - task: update:tools
       - task: update:packages
 
