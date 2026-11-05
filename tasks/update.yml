@@ -9,7 +9,8 @@ tasks:
   tools:
     desc: Update tools
     cmds:
-      - mise up --bump
+      - mise up
+      - mise lock
 
   packages:
     desc: Update packages
