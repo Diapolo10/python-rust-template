@@ -10,7 +10,7 @@ system_deps = "auto"
 TASK_X_GENTLE_FORCE = 1
 
 [tools]
-cspell = "10.3.3"
+cspell = "10.4.0"
 node = "26"       # Needed for cspell
 prettier = "3"
 task = "3"
