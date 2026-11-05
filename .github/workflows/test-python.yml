@@ -19,7 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-        python-version: ['3.12', '3.13', '3.14']
+        python-version: ['3.13', '3.14', '3.15']
 
     env:
       PYTHON_VERSION: ${{ matrix.python-version }}
@@ -34,6 +34,8 @@ jobs:
 
       - name: Install tools
         uses: jdx/mise-action@f5be966e4a917d54244728e6a5fdcd1d93a35e6c
+        with:
+          cache: false
 
       - name: Install project
         run: task install

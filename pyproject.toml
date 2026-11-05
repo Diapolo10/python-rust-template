@@ -7,7 +7,7 @@ name = "project-name"
 description = "A template mixed language (Python/Rust) project structure."
 dynamic = ["version"] # Taken from Cargo.toml
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.13,<3.16"
 license = { file = "LICENSE" }
 dependencies = []
 authors = [{ name = "Lari Liuhamo", email = "lari.liuhamo+pypi@gmail.com" }]
@@ -17,9 +17,9 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Rust",
     "Typing :: Typed",
@@ -40,8 +40,8 @@ dev = [
     "pytest-benchmark>=5.3.1",
     "pytest-cov>=7.1.0",
     "pytest-xdist[psutil]>=3.8.0",
-    "ruff>=0.17.3",
-    "sphinx>=9.1.1",
+    "ruff>=0.17.4",
+    "sphinx>=9.2.0",
 ]
 
 [tool.coverage.run]
