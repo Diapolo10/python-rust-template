@@ -8,7 +8,7 @@ on:
 
 jobs:
   review-dependabot-pr:
-    uses: diapolo10/.github/.github/workflows/review-dependabot-pr.yml@0d2a670ccb5c29efe1b551542e680ef8f7a02ba4
+    uses: diapolo10/.github/.github/workflows/review-dependabot-pr.yml@7d9b3e2a0fe514ccfe2ca36b60b0caf345e78c23
     permissions:
       contents: write
       pull-requests: write
